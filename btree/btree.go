@@ -23,16 +23,17 @@ func (t *Btree) Search(item int) *Btree {
 		if t.Left == nil {
 			return nil
 		}
-		return Search(t.Left, item)
+		return t.Left.Search(item)
 	}
 	if t.Right == nil {
 		return nil
 	}
-	return Search(t.Right, item)
+	return t.Right.Search(item)
 }
 
 func (t *Btree) FindMinimum() *Btree {
-	for min := t; min.Left != nil; min = min.Left {
+	var min *Btree
+	for min = t; min.Left != nil; min = min.Left {
 		// this block left intentionally blank
 	}
 	return min
@@ -51,6 +52,7 @@ func (t *Btree) Insert(i int) {
 	} else {
 		if t.Right != nil {
 			t.Right.Insert(i)
+			return
 		}
 		t.Right = &Btree{Item: i, Parent: t}
 	}
@@ -60,7 +62,7 @@ func (t *Btree) String() (s string) {
 	if t.Left != nil {
 		s += t.Left.String()
 	}
-	s += strconv.Itoa(t.Item)
+	s += strconv.Itoa(t.Item) + " "
 	if t.Right != nil {
 		s += t.Right.String()
 	}
